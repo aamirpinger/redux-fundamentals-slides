@@ -1,3 +1,5 @@
+
+
 function createStore(reducer) {
   // The store should have four parts
   // 1. The state
@@ -43,19 +45,68 @@ function createStore(reducer) {
   }
 }
 
+//const defining type of action object
+const CREATE_TASK = 'CREATE_TASK'
+const DELETE_TASK = 'DELETE_TASK'
+const TOGGLE_STATUS = 'TOGGLE_STATUS'
+
+const ADD_MOVIE = 'ADD_MOVIE'
+const REMOVE_MOVIE = 'REMOVE_MOVIE'
+const MOVIE_WATCHED = 'MOVIE_WATCHED'
+
+// following are action creators, these will simply return action objects
+function createTaskAction(task) {
+  return {
+    type: CREATE_TASK,
+    task,
+  }
+}
+function deleteTaskAction(id) {
+  return {
+    type: DELETE_TASK,
+    id,
+  }
+}
+function toggleTaskStatusAction(id) {
+  return {
+    type: TOGGLE_STATUS,
+    id,
+  }
+}
+
+function createMovieAction(movie) {
+  return {
+    type: ADD_MOVIE,
+    movie,
+  }
+}
+function deleteMovieAction(id) {
+  return {
+    type: REMOVE_MOVIE,
+    id,
+  }
+}
+function movieWatchedAction(id) {
+  return {
+    type: MOVIE_WATCHED,
+    id,
+  }
+}
+
+
 function task_reducer(state = [], action) {
   // this function will cater all the action related to ToDo Tasks
 
   switch (action.type) {
     // This switch case will check for incoming action's type and perform task accordingly
-    case 'DELETE_TASK':
+    case DELETE_TASK:
       return state.filter((r) => r.id !== action.id)
-    case 'TOGGLE_STATUS':
+    case TOGGLE_STATUS:
       return state.map((r) =>
         (r.id === action.id)
           ? Object.assign({}, r, { task_done: !r.task_done })
           : r)
-    case 'CREATE_TASK':
+    case CREATE_TASK:
       return state.concat([action.task])
     default:
       return state
@@ -68,11 +119,11 @@ function movie_reducer(state = [], action) {
 
   switch (action.type) {
     // This switch case will check for incoming action's type and perform task accordingly
-    case 'ADD_MOVIE':
+    case ADD_MOVIE:
       return state.concat([action.movie])
-    case 'REMOVE_MOVIE':
+    case REMOVE_MOVIE:
       return state.filter((r) => r.id !== action.id)
-    case 'MOVIE_WATCHED':
+    case MOVIE_WATCHED:
       return state.map((r) => (r.id === action.id) ? Object.assign({}, r, { watched: !r.watched }) : r)
     default:
       return state
@@ -105,40 +156,24 @@ unsubscribe = store.subscribe(() => console.log('Show me the current state', sto
 
 //this is the way to discpatch any action to store, store then forward 
 //this aciton and state to reducer
-store.dispatch({
-  type: 'ADD_MOVIE',
-  movie: {
-    id: "0",
-    name: "Mission Impossible",
-    watched: false
-  }
-
-})
-
-store.dispatch({
-  type: 'ADD_MOVIE',
-  movie: {
-    id: "1",
-    name: "Transporter",
-    watched: false
-  }
-
-})
-
-store.dispatch({
-  type: 'MOVIE_WATCHED',
+store.dispatch(createMovieAction({
   id: "0",
-})
+  name: "Mission Impossible",
+  watched: false
+}))
+
+store.dispatch(createMovieAction({
+  id: "1",
+  name: "Transporter",
+  watched: false
+}))
 
 
-store.dispatch({
-  type: 'CREATE_TASK',
-  task: {
-    id: "0",
-    name: "Jogging",
-    description: "Going Jogging 3 km 7 in the morning"
-  }
+store.dispatch(movieWatchedAction("0"))
 
-
-})
+store.dispatch(createTaskAction({
+  id: "0",
+  name: "Jogging",
+  description: "Going Jogging 3 km 7 in the morning"
+}))
 
