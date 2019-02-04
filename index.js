@@ -174,6 +174,6 @@ store.dispatch(movieWatchedAction("0"))
 store.dispatch(createTaskAction({
   id: "0",
   name: "Jogging",
-  description: "Going Jogging 3 km 7 in the morning"
+  task_done: false
 }))
 
