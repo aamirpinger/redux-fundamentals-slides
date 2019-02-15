@@ -58,7 +58,7 @@ function createStore(reducer) {
   function createTaskAction(task) {
     return {
       type: CREATE_TASK,
-      task,
+      tasks:task,
     }
   }
   function deleteTaskAction(id) {
@@ -77,7 +77,7 @@ function createStore(reducer) {
   function createMovieAction(movie) {
     return {
       type: ADD_MOVIE,
-      movie,
+      movies: movie,
     }
   }
   function deleteMovieAction(id) {
@@ -104,10 +104,10 @@ function createStore(reducer) {
       case TOGGLE_STATUS:
         return state.map((r) =>
           (r.id === action.id)
-            ? Object.assign({}, r, { task_done: !r.task_done })
+            ? Object.assign({}, r, { done: !r.done })
             : r)
       case CREATE_TASK:
-        return state.concat([action.task])
+        return state.concat([action.tasks])
       default:
         return state
     }
@@ -120,11 +120,11 @@ function createStore(reducer) {
     switch (action.type) {
       // This switch case will check for incoming action's type and perform task accordingly
       case ADD_MOVIE:
-        return state.concat([action.movie])
+        return state.concat([action.movies])
       case REMOVE_MOVIE:
         return state.filter((r) => r.id !== action.id)
       case MOVIE_WATCHED:
-        return state.map((r) => (r.id === action.id) ? Object.assign({}, r, { watched: !r.watched }) : r)
+        return state.map((r) => (r.id === action.id) ? Object.assign({}, r, { done: !r.done }) : r)
       default:
         return state
     }
@@ -137,8 +137,8 @@ function createStore(reducer) {
     // all the reducer function that is listed in this function will get invoked
   
     return {
-      task: task_reducer(state.task, action),
-      movie: movie_reducer(state.movie, action),
+      tasks: task_reducer(state.tasks, action),
+      movies: movie_reducer(state.movies, action),
     }
     
   }
@@ -158,7 +158,7 @@ function createStore(reducer) {
         id: generateId(),
         name: value,
      //description: "Going Jogging 3 km 7 in the morning",
-        task_done: false
+        done: false
     }))
  }
  function addMovie() {
@@ -169,7 +169,7 @@ function createStore(reducer) {
     store.dispatch(createMovieAction({
         id: generateId(), //Date.now(),
         name: value, //"Mission Impossible",
-        watched: false
+        done: false
     }))
  }
 
@@ -178,11 +178,11 @@ function createStore(reducer) {
   unsubscribe = store.subscribe(() => {
    // console.log('Show me the current state', store.getState())
 
-    const { task, movie } = store.getState()
+    const { tasks, movies } = store.getState()
     document.getElementById("task-list").innerHTML = ''
-    task.forEach(t => addTaskToDom(t))
+    tasks.forEach(t => addTaskToDom(t))
     document.getElementById("movie-list").innerHTML = ''
-    movie.forEach(m => addMovieToDom(m))
+    movies.forEach(m => addMovieToDom(m))
 
 })
 
@@ -220,7 +220,7 @@ function addTaskToDom(t) {
   li.appendChild(a)
   ul.appendChild(li)
 
-    a.style.textDecoration = (t.task_done) && "line-through"
+    a.style.textDecoration = (t.done) && "line-through"
     const rmvBtn = document.createElement("button")
     const btnText = document.createTextNode("x")
     rmvBtn.appendChild(btnText)
@@ -245,7 +245,7 @@ function addMovieToDom(m) {
   li.appendChild(a)
   ul.appendChild(li)
   
-  a.style.textDecoration = (m.watched) && "line-through"
+  a.style.textDecoration = (m.done) && "line-through"
   
   const rmvBtn = document.createElement("button")
   const btnText = document.createTextNode("x")
