@@ -30,17 +30,17 @@
       {
         id: generateId(),
         name: 'Car Service',
-        complete: true,
+        done: true,
       },
       {
         id: generateId(),
         name: 'Finalizing Presentation',
-        complete: false,
+        done: false,
       },
       {
         id: generateId(),
         name: 'Morning walk',
-        complete: false,
+        done: false,
       }
     ];
   
@@ -60,59 +60,72 @@
       })
     }
   
-    API.saveTodo = function (name) {
+    API.saveTask = function (name) {
       return new Promise((res, rej) => {
         setTimeout(() => {
-          const todo = {
+          const task = {
             id: generateId(),
             name: name,
-            complete: false,
+            done: false,
           }
-          tasks = tasks.concat([todo]);
-          fail() ? rej(todo) : res(todo);
+          tasks = tasks.concat([task]);
+          fail() ? rej(task) : res(task);
         }, 300)
       })
     }
   
-    API.saveGoal = function (name) {
+    API.saveMovie = function (name) {
       return new Promise((res, rej) => {
         setTimeout(() => {
-          const goal = {
+          const movie = {
             id: generateId(),
             name: name,
+            done: false
           }
-          movies = movies.concat([goal]);
-          fail() ? rej(goal) : res(goal);
+          movies = movies.concat([movie]);
+          fail() ? rej(movie) : res(movie);
         }, 300)
       })
     }
   
-    API.deleteGoal = function (id) {
+    API.deleteMovie = function (id) {
       return new Promise((res, rej) => {
         setTimeout(() => {
-          movies = movies.filter((goal) => goal.id !== id);
+          movies = movies.filter((movie) => movie.id !== id);
           fail() ? rej(): res(movies);
         }, 300)
       });
     }
   
-    API.deleteTodo = function (id) {
+    API.deleteTask = function (id) {
       return new Promise((res, rej) => {
         setTimeout(() => {
-          tasks = tasks.filter((todo) => todo.id !== id);
+          tasks = tasks.filter((task) => task.id !== id);
           fail() ? rej(): res(tasks);
         }, 300)
       });
     }
   
-    API.saveTodoToggle = function (id) {
+    API.saveTaskToggle = function (id) {
       return new Promise((res, rej) => {
         setTimeout(() => {
-          tasks = tasks.map((todo) => todo.id !== id ? todo :
-            Object.assign({}, todo, {complete: !todo.complete})
+          tasks = tasks.map((task) => task.id !== id ? task :
+            Object.assign({}, task, {done: !task.done})
           );
   
           fail() ? rej(): res(tasks);
+        }, 300)
+      });
+    }
+
+    API.saveMovieToggle = function (id) {
+      return new Promise((res, rej) => {
+        setTimeout(() => {
+          movies = movies.map((movie) => movie.id !== id ? movie :
+            Object.assign({}, movie, {done: !movie.done})
+          );
+  
+          fail() ? rej(): res(movies);
         }, 300)
       });
     }
