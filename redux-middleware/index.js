@@ -11,7 +11,7 @@ const MOVIE_WATCHED = 'MOVIE_WATCHED'
 function createTaskAction(task) {
   return {
     type: CREATE_TASK,
-    task,
+    tasks: task,
   }
 }
 
@@ -31,7 +31,7 @@ function toggleTaskStatusAction(id) {
 function createMovieAction(movie) {
   return {
     type: ADD_MOVIE,
-    movie,
+    movies: movie,
   }
 }
 function deleteMovieAction(id) {
@@ -58,10 +58,10 @@ function task_reducer(state = [], action) {
     case TOGGLE_STATUS:
       return state.map((r) =>
         (r.id === action.id)
-          ? Object.assign({}, r, { task_done: !r.task_done })
+          ? Object.assign({}, r, { done: !r.done })
           : r)
     case CREATE_TASK:
-      return state.concat([action.task])
+      return state.concat([action.tasks])
     default:
       return state
   }
@@ -73,11 +73,11 @@ function movie_reducer(state = [], action) {
   switch (action.type) {
     // This switch case will check for incoming action's type and perform task accordingly
     case ADD_MOVIE:
-      return state.concat([action.movie])
+      return state.concat([action.movies])
     case REMOVE_MOVIE:
       return state.filter((r) => r.id !== action.id)
     case MOVIE_WATCHED:
-      return state.map((r) => (r.id === action.id) ? Object.assign({}, r, { watched: !r.watched }) : r)
+      return state.map((r) => (r.id === action.id) ? Object.assign({}, r, { done: !r.done }) : r)
     default:
       return state
   }
@@ -93,7 +93,7 @@ function validateDispatch(store, action) {
   // proceeding to reducer
   if (
     action.type === CREATE_TASK &&
-    action.task.name.toLowerCase().includes('pizza')
+    action.tasks.name.toLowerCase().includes('pizza')
   ) {
     return alert("Sorry, you are on diet, No Pizza!")
   }
@@ -117,7 +117,7 @@ const middlewareChecker = (store) => (next) => (action) => {
 
   if (
     action.type === CREATE_TASK &&
-    action.task.name.toLowerCase().includes('pizza')
+    action.tasks.name.toLowerCase().includes('pizza')
   ) {
     return alert("Sorry, you are on diet, No Pizza!")
   }
@@ -150,8 +150,8 @@ const logger = (store) => (next) => (action) => {
 //As a second argument of createStore function we will pass Redux.applyMiddleware function
 // and we will pass our new middlewareChecker function to this Redux.applyMiddleware function 
 const store = Redux.createStore(Redux.combineReducers({
-  task: task_reducer,
-  movie: movie_reducer,
+  tasks: task_reducer,
+  movies: movie_reducer,
 }), Redux.applyMiddleware(middlewareChecker, logger))
 
 
@@ -166,7 +166,7 @@ function addToDoTask() {
     //validateDispatch(store, createTaskAction({
     id: generateId(),
     name: value,
-    task_done: false
+    done: false
   }))
 }
 
@@ -180,7 +180,7 @@ function addMovie() {
   store.dispatch(createMovieAction({
     id: generateId(),
     name: value,
-    watched: false
+    done: false
   }))
 }
 
@@ -189,11 +189,11 @@ function addMovie() {
 // this is how we can subscribe any listener, invoking unsubscribe() afterward will remove this 
 // listener from listeners array
 unsubscribe = store.subscribe(() => {
-  const { task, movie } = store.getState()
+  const { tasks, movies } = store.getState()
   document.getElementById("task-list").innerHTML = ''
-  task.forEach(t => addTaskToDom(t))
+  toggleTaskStatusAction.forEach(t => addTaskToDom(t))
   document.getElementById("movie-list").innerHTML = ''
-  movie.forEach(m => addMovieToDom(m))
+  movies.forEach(m => addMovieToDom(m))
 
 })
 
@@ -233,7 +233,7 @@ function addTaskToDom(t) {
   li.appendChild(a)
   ul.appendChild(li)
 
-  a.style.textDecoration = (t.task_done) && "line-through"
+  a.style.textDecoration = (t.done) && "line-through"
   const rmvBtn = document.createElement("button")
   const btnText = document.createTextNode("x")
   rmvBtn.appendChild(btnText)
@@ -257,7 +257,7 @@ function addMovieToDom(m) {
   li.appendChild(a)
   ul.appendChild(li)
 
-  a.style.textDecoration = (m.watched) && "line-through"
+  a.style.textDecoration = (m.done) && "line-through"
 
   const rmvBtn = document.createElement("button")
   const btnText = document.createTextNode("x")
