@@ -191,7 +191,7 @@ function addMovie() {
 unsubscribe = store.subscribe(() => {
   const { tasks, movies } = store.getState()
   document.getElementById("task-list").innerHTML = ''
-  toggleTaskStatusAction.forEach(t => addTaskToDom(t))
+  tasks.forEach(t => addTaskToDom(t))
   document.getElementById("movie-list").innerHTML = ''
   movies.forEach(m => addMovieToDom(m))
 
