@@ -1,5 +1,9 @@
 ## This is basic transformation from Task Todo and Movies to Watch app from simple Javascript to React component based model
 
+``` diff
+- This app uses Redux createStore and combineReducer functionality
+```
+
 ### Still this project does not uses Redux approach to access data directly from the store and bypassing parent components
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
