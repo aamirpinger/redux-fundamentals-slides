@@ -2,7 +2,7 @@
     window.API = {}
   
     function fail () {
-      return Math.floor(Math.random()*(5-1)) === 3
+      return Math.floor(Math.random()*4) === 3
     }
   
     function generateId () {
@@ -34,7 +34,7 @@
       },
       {
         id: generateId(),
-        name: 'Finalizing Presentation',
+        name: 'Finalize Presentation',
         done: false,
       },
       {
