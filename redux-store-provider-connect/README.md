@@ -1,3 +1,5 @@
+## This app is using React, Redux Store, combineReducer fucntion  and react-redux's provider and connect functionality to access the store directly by bypassing hierarchical order
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
