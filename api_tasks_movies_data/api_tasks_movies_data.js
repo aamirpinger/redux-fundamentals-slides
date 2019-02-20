@@ -1,5 +1,5 @@
 (function () {
-    window.API = {}
+    API = {}
   
     function fail () {
       return Math.floor(Math.random()*4) === 3
@@ -106,7 +106,7 @@
       });
     }
   
-    API.saveTaskToggle = function (id) {
+    API.toggleTask = function (id) {
       return new Promise((res, rej) => {
         setTimeout(() => {
           tasks = tasks.map((task) => task.id !== id ? task :
@@ -118,7 +118,7 @@
       });
     }
 
-    API.saveMovieToggle = function (id) {
+    API.toggleMovie = function (id) {
       return new Promise((res, rej) => {
         setTimeout(() => {
           movies = movies.map((movie) => movie.id !== id ? movie :
